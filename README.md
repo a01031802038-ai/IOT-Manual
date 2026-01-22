@@ -1,9 +1,8 @@
-<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>IoT AS 매뉴얼</title>
+  <title>IoT AS 메뉴얼</title>
   <style>
     :root{
       --bg:#0b1020; --text:#e8ecff; --muted:#aab2d5; --bd:rgba(255,255,255,.10);
@@ -21,11 +20,8 @@
         var(--bg);
     }
     a{color:inherit; text-decoration:none}
-    .app{
-      display:grid;
-      grid-template-columns: 280px 1fr;
-      min-height:100vh;
-    }
+    .app{display:grid; grid-template-columns: 280px 1fr; min-height:100vh;}
+
     .side{
       position:sticky; top:0; height:100vh;
       padding:18px; border-right:1px solid var(--bd);
@@ -56,6 +52,7 @@
       font-size:11px; padding:2px 8px; border-radius:999px;
       border:1px solid var(--bd); color:var(--muted); margin-left:auto;
       flex:0 0 auto;
+      opacity:.75;
     }
 
     .main{padding:22px; max-width:1100px; width:100%;}
@@ -103,10 +100,12 @@
       padding:10px 12px; background:rgba(0,0,0,.14);
       overflow:hidden;
     }
+    details[open]{background:rgba(0,0,0,.18);}
     summary{cursor:pointer; font-weight:800;}
     summary::-webkit-details-marker{display:none}
     .meta{margin-top:8px; font-size:12px; color:var(--muted); word-break:break-word;}
     .content{margin-top:10px; color:var(--text); font-size:13px; line-height:1.6; white-space:pre-wrap; word-break:break-word;}
+
     .pillchip{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;}
     .pillchip span{
       font-size:11px; padding:4px 8px; border-radius:999px;
@@ -114,42 +113,15 @@
       max-width:100%;
       overflow:hidden; text-overflow:ellipsis;
     }
+
     .empty{
       padding:14px; border:1px dashed rgba(255,255,255,.18);
       border-radius:14px; color:var(--muted); background:rgba(0,0,0,.10);
     }
 
-    /* ✅ AS 이력 */
-    .formgrid{
-      display:grid; gap:10px;
-      grid-template-columns: 1.2fr 1fr;
-      margin-top:10px;
-    }
-    .field{
-      border:1px solid var(--bd);
-      background:rgba(0,0,0,.14);
-      border-radius:14px;
-      padding:10px 12px;
-      display:flex; flex-direction:column; gap:6px;
-      min-width:0;
-    }
-    .field label{font-size:12px; color:var(--muted);}
-    .field input, .field textarea, .field select{
-      width:100%;
-      border:0; outline:0;
-      background:transparent;
-      color:var(--text);
-      font-size:14px;
-      font-family:var(--font);
-      resize:vertical;
-      min-height:22px;
-    }
-    .field textarea{min-height:90px; line-height:1.5;}
-    .actions{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .btn2{
+    .headrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;}
+    .mini{
+      display:inline-flex; align-items:center; justify-content:center;
       padding:10px 12px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.14);
@@ -157,118 +129,85 @@
       color:var(--text);
       font-size:13px;
       cursor:pointer;
-    }
-    .btn2.primary{
-      border-color:rgba(122,162,255,.35);
-      background:rgba(122,162,255,.12);
-    }
-    .btn2.danger{
-      border-color:rgba(255,120,120,.28);
-      background:rgba(255,120,120,.10);
-    }
-    .logtable{
-      margin-top:12px;
-      border:1px solid var(--bd);
-      background:rgba(0,0,0,.14);
-      border-radius:14px;
-      overflow:hidden;
-    }
-    .logrow{
-      display:grid;
-      grid-template-columns: 170px 1.2fr 2fr 110px 86px;
-      gap:10px;
-      padding:10px 12px;
-      border-top:1px solid rgba(255,255,255,.08);
-      align-items:center;
-      min-width:0;
-    }
-    .logrow.head{
-      border-top:0;
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:12px;
-      font-weight:700;
-    }
-    .logcell{
-      min-width:0;
-      overflow:hidden;
-      text-overflow:ellipsis;
+      user-select:none;
       white-space:nowrap;
-      font-size:13px;
     }
-    .logcell.wrap{
-      white-space:normal;
-      overflow:visible;
-      word-break:break-word;
-      line-height:1.5;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:4px 8px;
+    .mini:hover{filter:brightness(1.08);}
+
+    /* AS이력 */
+    .filters{display:flex; gap:8px; flex-wrap:wrap; margin:0;}
+    .fchip{
+      display:inline-flex; align-items:center;
+      font-size:12px;
+      padding:7px 10px;
       border-radius:999px;
-      border:1px solid var(--bd);
-      font-size:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.12);
       color:var(--muted);
-      background:rgba(0,0,0,.10);
-      max-width:100%;
-    }
-    .badge.done{
-      border-color:rgba(142,240,208,.35);
-      color:#c6fff0;
-      background:rgba(142,240,208,.10);
-    }
-    .badge.todo{
-      border-color:rgba(255,210,120,.35);
-      color:#ffe9c1;
-      background:rgba(255,210,120,.10);
-    }
-    .iconbtn{
       cursor:pointer;
+      user-select:none;
+    }
+    .fchip.active{
+      color:var(--text);
+      border-color:rgba(122,162,255,.35);
+      background:rgba(122,162,255,.14);
+    }
+
+    .logsum{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      line-height:1.3;
+    }
+    .logsum .dt{color:var(--muted); font-weight:800; font-size:12px;}
+    .logsum .store{font-weight:900;}
+    .badge{
+      font-size:11px; padding:3px 8px; border-radius:999px;
+      border:1px solid var(--bd); background:rgba(0,0,0,.10);
+      color:var(--muted);
+    }
+    .badge.done{border-color:rgba(142,240,208,.35); color:#c6fff0; background:rgba(142,240,208,.10);}
+    .badge.prog{border-color:rgba(255,210,120,.35); color:#ffe9c1; background:rgba(255,210,120,.10);}
+    .badge.todo{border-color:rgba(255,255,255,.18);}
+
+    .logtags{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;}
+    .tag{
+      font-size:11px; padding:3px 8px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(255,255,255,.04);
-      color:var(--text);
-      border-radius:12px;
-      padding:8px 10px;
-      font-size:12px;
-      text-align:center;
-      white-space:nowrap;
+      color:var(--muted);
+      max-width:240px;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
     }
-    .iconbtn:hover{filter:brightness(1.08);}
+
+    .preview{
+      margin-top:8px;
+      color:rgba(232,236,255,.88);
+      font-size:12.5px;
+      line-height:1.45;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      word-break:break-word;
+      white-space:pre-wrap;
+    }
+    details[open] .preview{display:none;}
 
     /* ✅ 모바일 최적화 */
     @media (max-width: 900px){
       .app{grid-template-columns: 1fr;}
       .side{
-        position:sticky;
-        top:0;
-        height:auto;
-        z-index:10;
-        border-right:0;
-        border-bottom:1px solid var(--bd);
+        position:sticky; top:0; height:auto; z-index:10;
+        border-right:0; border-bottom:1px solid var(--bd);
         padding:12px;
         backdrop-filter: blur(10px);
         background:rgba(11,16,32,.92);
       }
-      .nav{
-        flex-direction:row;
-        gap:8px;
-        margin-top:10px;
-      }
-      .nav a{
-        flex:1;
-        justify-content:center;
-        padding:10px 10px;
-      }
+      .nav{flex-direction:row; gap:8px; margin-top:10px;}
+      .nav a{flex:1; justify-content:center; padding:10px 10px;}
       .chip{display:none;}
       .main{padding:14px;}
       .btnrow{grid-template-columns: repeat(2, minmax(0, 1fr));}
-
-      .formgrid{grid-template-columns: 1fr;}
-      .logrow{grid-template-columns: 1fr; gap:6px;}
-      .logrow.head{display:none;}
-      .logcell{white-space:normal;}
+      .tag{max-width:160px;}
     }
     @media (max-width: 420px){
       .brand{padding:10px;}
@@ -279,10 +218,7 @@
 
     /* ✅ 터치(모바일/태블릿)에서는 리스트 내부 스크롤 전부 제거 */
     @media (hover: none) and (pointer: coarse) {
-      .list .body{
-        max-height: none !important;
-        overflow: visible !important;
-      }
+      .list .body{max-height:none !important; overflow:visible !important;}
     }
   </style>
 </head>
@@ -292,14 +228,14 @@
     <div class="brand">
       <div class="logo">IOT</div>
       <div>
-        <h1>IoT AS 매뉴얼</h1>
+        <h1>IoT AS 메뉴얼</h1>
         <p>Support</p>
       </div>
     </div>
     <nav class="nav">
       <a href="#home" data-tab="home" class="active">🏠 홈 <span class="chip">Links</span></a>
       <a href="#self" data-tab="self">🧯 자가조치 <span class="chip">Guide</span></a>
-      <a href="#log"  data-tab="log">📝 AS 이력 <span class="chip">Log</span></a>
+      <a href="#log"  data-tab="log">📝 AS 이력 <span class="chip">History</span></a>
     </nav>
   </aside>
 
@@ -312,52 +248,36 @@
 
     <section class="section active" id="tab-home">
       <div class="card">
-        <h2>매뉴얼</h2>
+        <h2>메뉴얼</h2>
         <div class="btnrow" id="manualButtons"></div>
       </div>
     </section>
 
     <section class="section" id="tab-self">
       <div class="card">
-        <h3>자가조치</h3>
+        <div class="headrow">
+          <h3 style="margin:0">자가조치</h3>
+          <button class="mini" id="btnReloadSelf">새로고침</button>
+        </div>
         <div class="list" id="selfList"></div>
       </div>
     </section>
 
     <section class="section" id="tab-log">
       <div class="card">
-        <h3>AS 이력</h3>
-
-        <div class="formgrid">
-          <div class="field">
-            <label>일시</label>
-            <input id="logWhen" type="datetime-local" />
+        <div class="headrow" style="align-items:flex-start;">
+          <div style="display:flex; flex-direction:column; gap:10px; min-width:0;">
+            <h3 style="margin:0">AS 이력</h3>
+            <div class="filters" id="logFilters">
+              <div class="fchip active" data-f="all">전체</div>
+              <div class="fchip" data-f="미처리">미처리</div>
+              <div class="fchip" data-f="진행중">진행중</div>
+              <div class="fchip" data-f="처리완료">처리완료</div>
+            </div>
           </div>
-          <div class="field">
-            <label>매장명</label>
-            <input id="logStore" type="text" placeholder="예) OO점" />
-          </div>
-          <div class="field" style="grid-column: 1 / -1;">
-            <label>상담내용</label>
-            <textarea id="logMemo" placeholder="상담 내용 / 증상 / 조치 내용"></textarea>
-          </div>
-          <div class="field" style="grid-column: 1 / -1;">
-            <label>처리여부</label>
-            <select id="logStatus">
-              <option value="미처리">미처리</option>
-              <option value="진행중">진행중</option>
-              <option value="처리완료">처리완료</option>
-            </select>
-          </div>
+          <button class="mini" id="btnReloadLog">새로고침</button>
         </div>
-
-        <div class="actions">
-          <button class="btn2 primary" id="btnSaveLog">저장</button>
-          <button class="btn2" id="btnExportCsv">CSV 내보내기</button>
-          <button class="btn2 danger" id="btnClearLogs">전체 삭제</button>
-        </div>
-
-        <div class="logtable" id="logTable"></div>
+        <div class="list" id="logList"></div>
       </div>
     </section>
   </main>
@@ -367,44 +287,44 @@
 const CONFIG = {
   SHEET_ID: "14actQ-pC6cLXRlqNzS1F0AVuUTAdJC4K_hhq7rOyBX4",
   WIRELESS_GID: "890902374",
+  LOG_GID: "806380229"
 };
-
-const STORAGE_KEY = "iot_as_logs_v1";
 
 const $ = (q)=>document.querySelector(q);
 const $$ = (q)=>Array.from(document.querySelectorAll(q));
 
+function tabFromHash(){
+  const h = (location.hash || "#home").replace("#","");
+  return (["home","self","log"].includes(h)) ? h : "home";
+}
 function setTab(tab){
   $$(".nav a").forEach(a=>a.classList.toggle("active", a.dataset.tab===tab));
   $$(".section").forEach(s=>s.classList.remove("active"));
   const sec = $("#tab-"+tab);
   if(sec) sec.classList.add("active");
-  // 탭 바뀌면 현재 검색어 기준으로 다시 렌더
-  if(tab==="self") renderSelf(lastSelf);
-  if(tab==="log") renderLogs(loadLogs());
-}
-function tabFromHash(){
-  const h = (location.hash || "#home").replace("#","");
-  return (["home","self","log"].includes(h)) ? h : "home";
+
+  if(tab==="home") ensureWirelessLoaded(false);
+  if(tab==="self") { ensureWirelessLoaded(false); renderSelf(lastSelf); }
+  if(tab==="log")  reloadLog();
 }
 window.addEventListener("hashchange", ()=> setTab(tabFromHash()));
 setTab(tabFromHash());
 
+let wirelessLoaded = false;
+let manualRowsCached = [];
 let lastSelf = [];
+let lastLog  = [];
+let logFilter = "all";
+let selfTimer = null;
+let logTimer  = null;
 
-// 검색창: 자가조치/AS이력 탭에서만 필터 적용
 $("#q").addEventListener("input", ()=>{
   const tab = tabFromHash();
   if(tab==="self") renderSelf(lastSelf);
-  if(tab==="log") renderLogs(loadLogs());
+  if(tab==="log")  renderLog(lastLog);
 });
 
-function escapeHtml(str){
-  return String(str ?? "")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-}
-
+/* ===== GVIZ ===== */
 function ensureGvizHook(){
   if(!window.google) window.google = {};
   if(!window.google.visualization) window.google.visualization = {};
@@ -413,7 +333,6 @@ function ensureGvizHook(){
     window.google.visualization.Query.setResponse = function(){};
   }
 }
-
 function loadSheetByGid(gid){
   return new Promise((resolve, reject) => {
     ensureGvizHook();
@@ -424,10 +343,7 @@ function loadSheetByGid(gid){
     const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?gid=${encodeURIComponent(gid)}&tqx=out:json`;
 
     const script = document.createElement("script");
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error("timeout"));
-    }, 12000);
+    const timer = setTimeout(() => { cleanup(); reject(new Error("timeout")); }, 12000);
 
     function cleanup(){
       clearTimeout(timer);
@@ -466,6 +382,12 @@ function loadSheetByGid(gid){
   });
 }
 
+/* ===== 홈/자가조치 ===== */
+function escapeHtml(str){
+  return String(str ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
 function isLikelyUrl(s){
   const t = String(s||"").trim();
   if(!t) return false;
@@ -473,20 +395,16 @@ function isLikelyUrl(s){
   if(t.includes("docs.google.com") || t.includes("drive.google.com")) return true;
   return false;
 }
-
 function findFirstUrlInRow(row){
   const blob = row.map(x => String(x ?? "")).join(" ");
   const m = blob.match(/https?:\/\/[^\s"']+/i);
   return m ? m[0] : "";
 }
-
 // A:구분(0) B:제목(1) C:내용(2) D:링크(3) E:키워드(4)
 function toObjects(rows){
   const safe = (r,i)=> (i>=0 && i<r.length) ? String(r[i]||"").trim() : "";
-
   const data = rows.filter(r => r.some(x => String(x).trim() !== ""));
 
-  // ✅ 첫 행이 헤더(제목/내용/키워드)면 제거
   if (data.length){
     const r0 = data[0];
     const isHeader =
@@ -512,7 +430,6 @@ function toObjects(rows){
     return { rowNo: idx+2, type, title, content, link, tags };
   });
 }
-
 function dedupeByLink(items){
   const map = new Map();
   for(const it of items){
@@ -522,7 +439,6 @@ function dedupeByLink(items){
   }
   return Array.from(map.values());
 }
-
 function labelForLink(item, n){
   if(item.title) return item.title;
   try{
@@ -531,14 +447,12 @@ function labelForLink(item, n){
   }catch(e){}
   return `Link #${n}`;
 }
-
 function labelForSelf(item, n){
   if(item.title) return item.title;
   const first = (item.content||"").split("\n").map(x=>x.trim()).filter(Boolean)[0];
   if(first) return first.length > 28 ? first.slice(0,28)+"…" : first;
   return `자가조치 ${n}`;
 }
-
 function renderManualButtons(items){
   const wrap = $("#manualButtons");
   wrap.innerHTML = "";
@@ -557,7 +471,6 @@ function renderManualButtons(items){
     wrap.appendChild(a);
   });
 }
-
 function renderSelf(items){
   const list = $("#selfList");
   const q = $("#q").value.trim().toLowerCase();
@@ -583,7 +496,7 @@ function renderSelf(items){
       : "";
 
     const linkHtml = isLikelyUrl(x.link)
-      ? `<div class="meta">관련 링크: <a href="${x.link.startsWith("http")?x.link:"https://"+x.link}" target="_blank" rel="noopener">${escapeHtml(x.link)}</a></div>`
+      ? `<div class="meta"><a href="${x.link.startsWith("http")?x.link:"https://"+x.link}" target="_blank" rel="noopener">${escapeHtml(x.link)}</a></div>`
       : "";
 
     d.innerHTML = `
@@ -595,209 +508,176 @@ function renderSelf(items){
     list.appendChild(d);
   });
 }
+async function ensureWirelessLoaded(force=false){
+  if(wirelessLoaded && !force) return;
 
-/* =========================
-   AS 이력 (로컬 저장)
-========================= */
-function nowKstForDatetimeLocal(){
-  const d = new Date();
-  const kst = new Date(d.getTime() + (9*60*60*1000) - (d.getTimezoneOffset()*60*1000));
-  // yyyy-MM-ddTHH:mm
-  const pad = (n)=>String(n).padStart(2,"0");
-  const yyyy = kst.getFullYear();
-  const mm = pad(kst.getMonth()+1);
-  const dd = pad(kst.getDate());
-  const hh = pad(kst.getHours());
-  const mi = pad(kst.getMinutes());
-  return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
-}
+  const tab = tabFromHash();
+  if(!force && tab !== "home" && tab !== "self") return;
 
-function loadLogs(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const arr = raw ? JSON.parse(raw) : [];
-    return Array.isArray(arr) ? arr : [];
-  }catch(e){
-    return [];
-  }
-}
-function saveLogs(arr){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-}
-function uid(){
-  return Math.random().toString(16).slice(2) + Date.now().toString(16);
-}
-function fmtWhen(v){
-  const s = String(v||"").trim();
-  if(!s) return "";
-  // datetime-local 형식이면 보기 좋게
-  // 2026-01-22T10:30 -> 2026-01-22 10:30
-  return s.replace("T"," ");
-}
-function statusBadge(status){
-  const st = String(status||"").trim();
-  if(st==="처리완료") return `<span class="badge done">처리완료</span>`;
-  if(st==="진행중") return `<span class="badge todo">진행중</span>`;
-  return `<span class="badge todo">미처리</span>`;
-}
-
-function renderLogs(items){
-  const wrap = $("#logTable");
-  const q = $("#q").value.trim().toLowerCase();
-
-  const filtered = items.filter(x=>{
-    if(!q) return true;
-    const blob = `${x.when} ${x.store} ${x.memo} ${x.status}`.toLowerCase();
-    return blob.includes(q);
-  });
-
-  if(!filtered.length){
-    wrap.innerHTML = `<div class="empty">등록된 이력이 없습니다.</div>`;
-    return;
-  }
-
-  const head = `
-    <div class="logrow head">
-      <div>일시</div>
-      <div>매장명</div>
-      <div>상담내용</div>
-      <div>처리여부</div>
-      <div>관리</div>
-    </div>
-  `;
-
-  const rows = filtered.map(x=>`
-    <div class="logrow">
-      <div class="logcell">${escapeHtml(fmtWhen(x.when))}</div>
-      <div class="logcell">${escapeHtml(x.store)}</div>
-      <div class="logcell wrap">${escapeHtml(x.memo)}</div>
-      <div class="logcell">${statusBadge(x.status)}</div>
-      <div class="logcell" style="display:flex; gap:8px; flex-wrap:wrap;">
-        <button class="iconbtn" data-act="toggle" data-id="${escapeHtml(x.id)}">상태변경</button>
-        <button class="iconbtn" data-act="del" data-id="${escapeHtml(x.id)}">삭제</button>
-      </div>
-    </div>
-  `).join("");
-
-  wrap.innerHTML = `<div>${head}${rows}</div>`;
-
-  // 이벤트 위임
-  wrap.querySelectorAll("button[data-act]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const act = btn.dataset.act;
-      const id = btn.dataset.id;
-      let logs = loadLogs();
-
-      if(act==="del"){
-        logs = logs.filter(x=>x.id!==id);
-        saveLogs(logs);
-        renderLogs(logs);
-        return;
-      }
-
-      if(act==="toggle"){
-        logs = logs.map(x=>{
-          if(x.id!==id) return x;
-          const cur = String(x.status||"미처리");
-          const next = (cur==="미처리") ? "진행중" : (cur==="진행중" ? "처리완료" : "미처리");
-          return { ...x, status: next };
-        });
-        saveLogs(logs);
-        renderLogs(logs);
-      }
-    });
-  });
-}
-
-function downloadText(filename, text){
-  const blob = new Blob([text], {type:"text/plain;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 0);
-}
-
-function toCsv(logs){
-  const esc = (s)=> `"${String(s??"").replaceAll('"','""')}"`;
-  const head = ["일시","매장명","상담내용","처리여부"].map(esc).join(",");
-  const body = logs.map(x=>[
-    fmtWhen(x.when),
-    x.store,
-    x.memo,
-    x.status
-  ].map(esc).join(",")).join("\n");
-  return head + "\n" + body;
-}
-
-$("#btnSaveLog").addEventListener("click", ()=>{
-  const when = $("#logWhen").value.trim();
-  const store = $("#logStore").value.trim();
-  const memo = $("#logMemo").value.trim();
-  const status = $("#logStatus").value;
-
-  if(!when || !store || !memo){
-    alert("일시 / 매장명 / 상담내용은 필수입니다.");
-    return;
-  }
-
-  const logs = loadLogs();
-  logs.unshift({ id: uid(), when, store, memo, status, createdAt: Date.now() });
-  saveLogs(logs);
-
-  // 입력 초기화(일시는 현재로)
-  $("#logWhen").value = nowKstForDatetimeLocal();
-  $("#logStore").value = "";
-  $("#logMemo").value = "";
-  $("#logStatus").value = "미처리";
-
-  renderLogs(logs);
-});
-
-$("#btnExportCsv").addEventListener("click", ()=>{
-  const logs = loadLogs();
-  if(!logs.length){
-    alert("내보낼 이력이 없습니다.");
-    return;
-  }
-  downloadText(`AS이력_${new Date().toISOString().slice(0,10)}.csv`, toCsv(logs));
-});
-
-$("#btnClearLogs").addEventListener("click", ()=>{
-  const logs = loadLogs();
-  if(!logs.length) return;
-  if(!confirm("전체 이력을 삭제할까요?")) return;
-  saveLogs([]);
-  renderLogs([]);
-});
-
-(function initLogForm(){
-  $("#logWhen").value = nowKstForDatetimeLocal();
-  renderLogs(loadLogs());
-})();
-
-/* =========================
-   초기 로딩
-========================= */
-(async function init(){
   try{
     const raw = await loadSheetByGid(CONFIG.WIRELESS_GID);
     const rows = toObjects(raw.rows);
 
-    const manualRows = dedupeByLink(rows.filter(x => isLikelyUrl(x.link)))
+    manualRowsCached = dedupeByLink(rows.filter(x => isLikelyUrl(x.link)))
       .map((x,i)=>({ ...x, title: labelForLink(x, i+1) }));
 
     const selfRowsRaw = rows.filter(x => String(x.content||"").trim() !== "");
-    const selfRows = selfRowsRaw.map((x,i)=>({ ...x, title: labelForSelf(x, i+1) }));
+    lastSelf = selfRowsRaw.map((x,i)=>({ ...x, title: labelForSelf(x, i+1) }));
 
-    renderManualButtons(manualRows);
-    lastSelf = selfRows;
-    renderSelf(lastSelf);
+    renderManualButtons(manualRowsCached);
+    if(tab === "self") renderSelf(lastSelf);
+
+    wirelessLoaded = true;
   }catch(e){
+    wirelessLoaded = false;
     renderManualButtons([]);
     lastSelf = [];
-    renderSelf(lastSelf);
+    if(tab === "self") renderSelf(lastSelf);
+  }
+}
+
+/* ===== AS 이력 (A:일시 B:시간 C:매장명 D:상담내용 E:처리여부) ===== */
+function normStatus(s){
+  const v = String(s||"").trim();
+  if(v==="처리완료" || v==="진행중" || v==="미처리") return v;
+  return v || "미처리";
+}
+function statusBadge(status){
+  const st = normStatus(status);
+  if(st==="처리완료") return `<span class="badge done">처리완료</span>`;
+  if(st==="진행중") return `<span class="badge prog">진행중</span>`;
+  return `<span class="badge todo">미처리</span>`;
+}
+function parseDT(dateStr, timeStr){
+  const d = String(dateStr||"").trim();
+  const t = String(timeStr||"").trim();
+  if(!d && !t) return 0;
+  const base = d.replace(/\./g,"-").replace(/\//g,"-");
+  const hhmm = t ? t.trim() : "";
+  const s = (base && hhmm) ? `${base} ${hhmm}` : (base || hhmm);
+  const dt = new Date(s);
+  const ms = dt.getTime();
+  return Number.isFinite(ms) ? ms : 0;
+}
+function headerLike(r){
+  const a = String(r[0]||"").trim();
+  const b = String(r[1]||"").trim();
+  const c = String(r[2]||"").trim();
+  return (a==="일시" && b==="시간") || (a==="일시" && c==="매장명");
+}
+function normalizeStoreTag(store){
+  const s = String(store||"").trim();
+  if(!s) return "";
+  return s.replace(/\s+/g,""); // 공백 정리
+}
+function memoPreview(m){
+  const s = String(m||"").trim();
+  if(!s) return "";
+  return s;
+}
+async function loadLogFromSheet(){
+  const raw = await loadSheetByGid(CONFIG.LOG_GID);
+  const rows = (raw.rows||[]).filter(r => r.some(x => String(x).trim() !== ""));
+
+  if(rows.length && headerLike(rows[0])) rows.shift();
+
+  const data = rows.map(r=>({
+    date:  String(r[0]||"").trim(),
+    time:  String(r[1]||"").trim(),
+    store: String(r[2]||"").trim(),
+    memo:  String(r[3]||"").trim(),
+    status: normStatus(r[4])
+  })).filter(x => x.date || x.time || x.store || x.memo || x.status);
+
+  data.sort((a,b)=> parseDT(b.date,b.time) - parseDT(a.date,a.time));
+  return data;
+}
+function renderLog(items){
+  const list = $("#logList");
+  const q = $("#q").value.trim().toLowerCase();
+
+  const filtered = items.filter(x=>{
+    if(logFilter !== "all" && String(x.status||"").trim() !== logFilter) return false;
+    if(!q) return true;
+    const blob = `${x.date} ${x.time} ${x.store} ${x.memo} ${x.status}`.toLowerCase();
+    return blob.includes(q);
+  });
+
+  list.innerHTML = "";
+  if(!filtered.length){
+    list.innerHTML = `<div class="empty">표시할 항목이 없습니다.</div>`;
+    return;
+  }
+
+  filtered.forEach(x=>{
+    const d = document.createElement("details");
+    const dtText = [x.date, x.time].filter(Boolean).join(" ");
+    const tag = normalizeStoreTag(x.store);
+    const tagHtml = tag ? `<span class="tag">#${escapeHtml(tag)}</span>` : "";
+    const preview = memoPreview(x.memo);
+
+    d.innerHTML = `
+      <summary>
+        <div class="logsum">
+          <span class="dt">${escapeHtml(dtText)}</span>
+          <span class="store">${escapeHtml(x.store || "매장명 없음")}</span>
+          ${statusBadge(x.status)}
+          <span class="logtags">${tagHtml}</span>
+        </div>
+        ${preview ? `<div class="preview">${escapeHtml(preview)}</div>` : ``}
+      </summary>
+      <div class="content body">${escapeHtml(x.memo || "")}</div>
+      <div class="meta">${escapeHtml(normStatus(x.status))}</div>
+    `;
+    list.appendChild(d);
+  });
+}
+async function reloadLog(){
+  const list = $("#logList");
+  if(tabFromHash()==="log") list.innerHTML = `<div class="empty">불러오는 중…</div>`;
+  try{
+    lastLog = await loadLogFromSheet();
+    renderLog(lastLog);
+  }catch(e){
+    lastLog = [];
+    renderLog(lastLog);
+  }
+}
+
+/* ===== 필터 ===== */
+(function initLogFilters(){
+  const wrap = $("#logFilters");
+  if(!wrap) return;
+  wrap.addEventListener("click", (ev)=>{
+    const btn = ev.target.closest(".fchip");
+    if(!btn) return;
+    logFilter = btn.dataset.f || "all";
+    $$("#logFilters .fchip").forEach(x=>x.classList.toggle("active", x.dataset.f === logFilter));
+    renderLog(lastLog);
+  });
+})();
+
+/* ===== 버튼 ===== */
+$("#btnReloadSelf").addEventListener("click", ()=> ensureWirelessLoaded(true));
+$("#btnReloadLog").addEventListener("click", reloadLog);
+
+/* ===== 자동 새로고침: 열린 탭만 ===== */
+function startPolling(){
+  if(selfTimer) clearInterval(selfTimer);
+  if(logTimer) clearInterval(logTimer);
+
+  selfTimer = setInterval(()=>{ if(tabFromHash()==="self") ensureWirelessLoaded(true); }, 60000);
+  logTimer  = setInterval(()=>{ if(tabFromHash()==="log")  reloadLog(); }, 45000);
+}
+startPolling();
+
+/* ===== 초기 로딩: 전체 읽지 않음 ===== */
+(async function init(){
+  const tab = tabFromHash();
+  if(tab === "log") {
+    await reloadLog();
+  } else if(tab === "home" || tab === "self") {
+    await ensureWirelessLoaded(false);
   }
 })();
 </script>
